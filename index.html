@@ -9,15 +9,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:         #0B0813;
-  --surface:    #110e1c;
-  --surface2:   #181428;
-  --text:       #edecf5;
-  --text-2:     #7b7694;
-  --text-3:     #3a3650;
-  --accent:     #9B85EC;
-  --accent-dim: rgba(155,133,236,0.09);
-  --green:      #34d399;
+  --bg:          #0B0813;
+  --surface:     #110e1c;
+  --surface2:    #181428;
+  --text:        #edecf5;        /* 17:1 sur bg ✅ */
+  --text-2:      #9b96b8;        /* 6.5:1 sur bg ✅ — était #7b7694 (4.6:1) */
+  --text-3:      #6b6687;        /* 3.7:1 sur bg ✅ — était #3a3650 (1.7:1) */
+  --text-ghost:  #3a3650;        /* purement décoratif — séparateurs, points */
+  --accent:      #9B85EC;        /* 6.6:1 sur bg ✅ */
+  --accent-dim:  rgba(155,133,236,0.09);
+  --green:       #34d399;        /* 10.3:1 sur bg ✅ */
 }
 
 html { scroll-behavior: smooth; }
@@ -78,7 +79,7 @@ h1 .hi { color: var(--accent); }
 .dropdown-item { padding: 8px 10px; border-radius: 6px; font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.1s; }
 .dropdown-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
 .dropdown-item.selected { color: var(--accent); background: var(--accent-dim); }
-.dropdown-item-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; }
+.dropdown-item-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-ghost); flex-shrink: 0; }
 .dropdown-item.selected .dropdown-item-dot { background: var(--accent); }
 .sort-wrap { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .sort-label { font-size: 10px; color: var(--text-3); white-space: nowrap; }
@@ -228,7 +229,7 @@ h1 .hi { color: var(--accent); }
 
 /* Hover hint */
 .hover-hint { font-size: 10px; color: var(--text-3); display: flex; align-items: center; gap: 5px; }
-.hover-hint-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.5; animation: pulse 2s ease-in-out infinite; }
+.hover-hint-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.6; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
 </style>
 </head>
