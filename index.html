@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UX Cheatcodes — Bibliothèque</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #0B0813;
+  --surface:    #110e1c;
+  --surface2:   #181428;
+  --text:       #edecf5;
+  --text-2:     #7b7694;
+  --text-3:     #3a3650;
+  --accent:     #9B85EC;
+  --accent-dim: rgba(155,133,236,0.09);
+  --green:      #34d399;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Fragment Mono', monospace;
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; -webkit-font-smoothing: antialiased; font-size: 13px;
+}
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px; display: flex; align-items: center; padding: 0 40px;
+  background: rgba(11,8,19,0.94); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-right: 40px; }
+.nav-logo-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 0 18px rgba(155,133,236,0.28); }
+.nav-logo-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); }
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-link { padding: 6px 13px; border-radius: 8px; color: var(--text-2); text-decoration: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; transition: all 0.15s; }
+.nav-link:hover { color: var(--text); background: var(--surface2); }
+.nav-link.active { color: var(--text); background: var(--surface2); }
+.nav-btn { padding: 7px 18px; border-radius: 8px; background: var(--accent); color: white; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 0 20px rgba(155,133,236,0.22); transition: opacity 0.15s; }
+.nav-btn:hover { opacity: 0.88; }
+
+/* ══ HERO ══ */
+.hero { padding: 108px 56px 56px; max-width: 1240px; margin: 0 auto; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-dim); border-radius: 100px; padding: 5px 14px; font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 28px; }
+.eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px rgba(155,133,236,0.9); }
+h1 { font-family: 'Inter', sans-serif; font-size: clamp(40px, 5vw, 64px); font-weight: 800; line-height: 1.04; letter-spacing: -2.5px; margin-bottom: 20px; max-width: 700px; }
+h1 .dim { color: var(--text-3); }
+h1 .hi { color: var(--accent); }
+.hero-sub { color: var(--text-2); font-size: 14px; line-height: 1.85; max-width: 440px; margin-bottom: 44px; }
+.hero-stats { display: flex; align-items: center; gap: 36px; }
+.stat { display: flex; flex-direction: column; gap: 3px; }
+.stat-num { font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+.stat-label { font-size: 11px; color: var(--text-3); }
+.stat-sep { width: 1px; height: 28px; background: rgba(255,255,255,0.05); }
+
+/* ══ TOOLBAR ══ */
+.toolbar { padding: 0 56px 44px; max-width: 1240px; margin: 0 auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.search-wrap { position: relative; flex-shrink: 0; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 12px; pointer-events: none; }
+.search-input { background: var(--surface); border-radius: 10px; padding: 9px 14px 9px 34px; color: var(--text); font-family: 'Fragment Mono', monospace; font-size: 12px; width: 220px; outline: none; border: none; box-shadow: 0 0 0 1px rgba(255,255,255,0.04); transition: box-shadow 0.15s; }
+.search-input::placeholder { color: var(--text-3); }
+.search-input:focus { box-shadow: 0 0 0 1px rgba(155,133,236,0.25); }
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-all { padding: 8px 14px; border-radius: 8px; border: none; background: var(--accent-dim); color: var(--accent); font-family: 'Fragment Mono', monospace; font-size: 11px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.dropdown { position: relative; }
+.dropdown-btn { padding: 8px 12px; border-radius: 8px; border: none; background: var(--surface); color: var(--text-2); font-family: 'Fragment Mono', monospace; font-size: 11px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; white-space: nowrap; box-shadow: 0 0 0 1px rgba(255,255,255,0.04); }
+.dropdown-btn:hover, .dropdown-btn.open { color: var(--text); box-shadow: 0 0 0 1px rgba(155,133,236,0.2); }
+.dropdown-btn.has-selection { color: var(--accent); }
+.dropdown-arrow { font-size: 9px; color: var(--text-3); transition: transform 0.15s; }
+.dropdown-btn.open .dropdown-arrow { transform: rotate(180deg); }
+.dropdown-menu { position: absolute; top: calc(100% + 6px); left: 0; background: #1a1628; border-radius: 10px; padding: 6px; min-width: 180px; z-index: 50; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06); opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity 0.15s, transform 0.15s; }
+.dropdown-menu.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+.dropdown-item { padding: 8px 10px; border-radius: 6px; font-family: 'Fragment Mono', monospace; font-size: 11px; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.1s; }
+.dropdown-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.dropdown-item.selected { color: var(--accent); background: var(--accent-dim); }
+.dropdown-item-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; }
+.dropdown-item.selected .dropdown-item-dot { background: var(--accent); }
+.sort-wrap { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.sort-label { font-size: 10px; color: var(--text-3); white-space: nowrap; }
+
+/* ══ SECTION HEADER ══ */
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.section-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+.section-line { flex: 1; height: 1px; background: rgba(255,255,255,0.04); }
+
+/* ══ BRAND ══ */
+.cb { display: inline-flex; width: 22px; height: 22px; border-radius: 6px; background: rgba(255,255,255,0.07); overflow: hidden; align-items: center; justify-content: center; transition: background 0.15s; }
+.cb:hover { background: rgba(255,255,255,0.12); }
+.cb img { width: 16px; height: 16px; object-fit: contain; }
+.cb-sm { display: inline-flex; width: 18px; height: 18px; border-radius: 5px; background: rgba(255,255,255,0.06); overflow: hidden; align-items: center; justify-content: center; }
+.cb-sm img { width: 13px; height: 13px; object-fit: contain; }
+.brand-row { display: flex; align-items: center; gap: 5px; }
+.brand-row-label { font-size: 9px; color: var(--text-3); margin-right: 2px; }
+
+/* ══ USE-CASE TAGS — more visible ══ */
+.use-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.use-tag {
+  padding: 4px 10px; border-radius: 6px; font-size: 10px;
+  background: rgba(255,255,255,0.05);
+  color: #9893b0;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-family: 'Fragment Mono', monospace;
+  white-space: nowrap;
+}
+
+/* ══ SCORE BADGE ══ */
+.score-badge { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+.score-num { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 800; color: var(--green); line-height: 1; }
+.score-lbl { font-size: 8px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* ══════════════════════════════════════════
+   FEATURED CARDS — avec hover flip identique aux grilles
+══════════════════════════════════════════ */
+.featured-section { padding: 0 56px 64px; max-width: 1240px; margin: 0 auto; }
+.featured-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.feat-card {
+  background: var(--surface); border-radius: 20px; padding: 26px;
+  cursor: pointer; text-decoration: none; display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 2px 0 rgba(255,255,255,0.03) inset, 0 20px 48px rgba(0,0,0,0.38);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative; overflow: hidden;
+}
+.feat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 0 rgba(155,133,236,0.07) inset, 0 28px 56px rgba(0,0,0,0.48), 0 0 0 1px rgba(155,133,236,0.08);
+}
+.feat-card.primary { background: linear-gradient(145deg, #15112a 0%, #1a1432 100%); }
+
+.feat-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.feat-emoji { font-size: 28px; line-height: 1; }
+
+.feat-science { font-size: 10px; color: var(--text-3); }
+.feat-title {
+  font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.5px; line-height: 1.15;
+}
+.feat-card.primary .feat-title { font-size: 21px; }
+
+/* ── Flip zone (featured) ── */
+.feat-body { position: relative; flex: 1; min-height: 70px; }
+.feat-desc {
+  font-size: 12px; color: var(--text-2); line-height: 1.85;
+  transition: opacity 0.22s, transform 0.22s;
+}
+.feat-cheatcode {
+  position: absolute; inset: 0;
+  background: rgba(155,133,236,0.06);
+  border-left: 2px solid rgba(155,133,236,0.28);
+  border-radius: 0 10px 10px 0; padding: 11px 13px;
+  font-size: 12px; color: #8a86a8; font-style: italic; line-height: 1.75;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.22s, transform 0.22s;
+  pointer-events: none;
+}
+.feat-cheatcode strong { color: var(--accent); font-style: normal; }
+.feat-cheatcode-label {
+  font-size: 9px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 6px; font-style: normal; display: block;
+}
+
+.feat-card:hover .feat-desc { opacity: 0; transform: translateY(-5px); }
+.feat-card:hover .feat-cheatcode { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.feat-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.feat-arrow { font-size: 13px; color: var(--text-3); transition: color 0.15s; }
+.feat-card:hover .feat-arrow { color: var(--accent); }
+
+/* ══ RANK badge ══ */
+.rank-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(155,133,236,0.1); border-radius: 5px; padding: 2px 8px; font-size: 9px; color: var(--accent); letter-spacing: 0.3px; }
+
+/* ══════════════════════════════════════════
+   GRID CARDS
+══════════════════════════════════════════ */
+.grid-section { padding: 0 56px 100px; max-width: 1240px; margin: 0 auto; }
+.cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+.card {
+  background: var(--surface); border-radius: 18px; padding: 22px 24px;
+  cursor: pointer; text-decoration: none; display: flex; flex-direction: column; gap: 11px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 14px 32px rgba(0,0,0,0.28);
+  transition: transform 0.18s, box-shadow 0.18s;
+  position: relative; overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 1px 0 rgba(155,133,236,0.07) inset, 0 22px 44px rgba(0,0,0,0.4), 0 0 0 1px rgba(155,133,236,0.07);
+}
+
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; }
+.card-emoji { font-size: 22px; line-height: 1; }
+.card-science { font-size: 10px; color: var(--text-3); margin-bottom: 3px; }
+.card-title { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; line-height: 1.22; }
+
+/* flip zone */
+.card-body { position: relative; flex: 1; min-height: 56px; }
+.card-desc { font-size: 12px; color: var(--text-2); line-height: 1.85; transition: opacity 0.22s, transform 0.22s; }
+.card-cc {
+  position: absolute; inset: 0;
+  background: rgba(155,133,236,0.06);
+  border-left: 2px solid rgba(155,133,236,0.25);
+  border-radius: 0 8px 8px 0; padding: 9px 11px;
+  font-size: 11px; color: #8a86a8; font-style: italic; line-height: 1.75;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.22s, transform 0.22s;
+  pointer-events: none;
+}
+.card-cc strong { color: var(--accent); font-style: normal; }
+.card-cc-lbl { font-size: 9px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; font-style: normal; display: block; }
+.card:hover .card-desc { opacity: 0; transform: translateY(-5px); }
+.card:hover .card-cc { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.card-cta { font-size: 11px; color: var(--text-3); transition: color 0.15s; }
+.card:hover .card-cta { color: var(--accent); }
+
+/* ══ BOTTOM CTA ══ */
+.bottom-cta { text-align: center; padding: 64px 48px 80px; border-top: 1px solid rgba(255,255,255,0.04); }
+.bottom-cta h2 { font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.8px; margin-bottom: 10px; }
+.bottom-cta p { color: var(--text-2); font-size: 13px; line-height: 1.7; margin-bottom: 24px; }
+.bottom-cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; border: none; background: var(--accent); color: white; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 0 32px rgba(155,133,236,0.25); transition: opacity 0.15s; }
+.bottom-cta-btn:hover { opacity: 0.88; }
+
+/* Hover hint */
+.hover-hint { font-size: 10px; color: var(--text-3); display: flex; align-items: center; gap: 5px; }
+.hover-hint-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.5; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🎮</div>
+    <span class="nav-logo-name">UX Cheatcodes</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Outils IA</a>
+    <a class="nav-link" href="#">Session 1:1</a>
+    <a class="nav-link active" href="#">UX cheatcodes</a>
+  </div>
+  <button class="nav-btn">Analyser mon produit</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow"><div class="eyebrow-dot"></div>La bibliothèque</div>
+  <h1>Les patterns qui font<br><span class="hi">convertir.</span><br><span class="dim">Pas juste les expliquer.</span></h1>
+  <p class="hero-sub">50+ biais cognitifs transformés en actions concrètes. Avec un score d'impact, un prompt IA, et les étapes pour l'appliquer dès aujourd'hui.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Cheatcodes</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-num">8</span><span class="stat-label">Catégories</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-num">1</span><span class="stat-label">Prompt IA par fiche</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat"><span class="stat-num">Gratuit</span><span class="stat-label">Pour toujours</span></div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" placeholder="Rechercher un pattern...">
+  </div>
+  <div class="filter-group">
+    <button class="filter-all">Tous</button>
+
+    <div class="dropdown" id="dd-objectif">
+      <button class="dropdown-btn" onclick="toggleDd('dd-objectif')">Objectif <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu" id="dd-objectif-menu">
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Conversion</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Rétention</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Activation</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Reduce Churn</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Sharing & Referrals</div>
+      </div>
+    </div>
+
+    <div class="dropdown" id="dd-contexte">
+      <button class="dropdown-btn" onclick="toggleDd('dd-contexte')">Contexte <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu" id="dd-contexte-menu">
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Pricing & Plans</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Onboarding</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Essais & Upsells</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Email & Push</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Landing page</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Checkout</div>
+      </div>
+    </div>
+
+    <div class="dropdown" id="dd-impact">
+      <button class="dropdown-btn" onclick="toggleDd('dd-impact')">Impact <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu" id="dd-impact-menu">
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Fort (8–10)</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Moyen (5–7)</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Rapide à tester</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Sans dev</div>
+      </div>
+    </div>
+
+    <div class="dropdown" id="dd-stade">
+      <button class="dropdown-btn" onclick="toggleDd('dd-stade')">Stade produit <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu" id="dd-stade-menu">
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>0 → 1k utilisateurs</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Scaling</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Risque de churn</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Mature</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sort-wrap">
+    <span class="sort-label">Trier par</span>
+    <div class="dropdown" id="dd-sort">
+      <button class="dropdown-btn" onclick="toggleDd('dd-sort')">Impact <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu" id="dd-sort-menu">
+        <div class="dropdown-item selected" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Impact (élevé → bas)</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Facilité d'implémentation</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Récents</div>
+        <div class="dropdown-item" onclick="selectItem(this)"><div class="dropdown-item-dot"></div>Alphabétique</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FEATURED TOP 3 ══ -->
+<div class="featured-section">
+  <div class="section-header">
+    <span class="section-label">🏆 Top impact</span>
+    <div class="section-line"></div>
+    <span class="hover-hint"><div class="hover-hint-dot"></div>Survole pour voir le cheatcode</span>
+  </div>
+  <div class="featured-grid">
+
+    <!-- #1 Aversion à la perte -->
+    <a class="feat-card primary" href="cheatcode-detail.html">
+      <div class="feat-top">
+        <div>
+          <span class="rank-badge">#1 · Économie comportementale</span>
+        </div>
+        <div class="score-badge"><span class="score-num">9/10</span><span class="score-lbl">impact</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="feat-emoji">😰</div>
+        <div>
+          <div class="feat-science">Aversion à la perte</div>
+          <div class="feat-title">La peur de perdre vend mieux que l'envie de gagner</div>
+        </div>
+      </div>
+      <div class="use-tags">
+        <span class="use-tag">Essais expirés</span>
+        <span class="use-tag">Upsells</span>
+        <span class="use-tag">Checkout</span>
+        <span class="use-tag">Rappels email</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-desc">Les pertes pèsent 2× plus lourd que les gains dans notre cerveau. Pas une option à exploiter — un mécanisme câblé depuis 200 000 ans.</div>
+        <div class="feat-cheatcode">
+          <span class="feat-cheatcode-label">🎮 Cheatcode</span>
+          Remplace <strong>"Obtiens plus"</strong> par <strong>"Ne perds pas l'accès"</strong> — partout où l'utilisateur risque de perdre quelque chose qu'il a déjà.
+        </div>
+      </div>
+      <div class="feat-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span>
+          <span class="cb"><img src="https://logo.clearbit.com/duolingo.com" alt="Duolingo"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/booking.com" alt="Booking"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/spotify.com" alt="Spotify"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/dropbox.com" alt="Dropbox"></span>
+        </div>
+        <span class="feat-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- #2 Biais d'ancrage -->
+    <a class="feat-card" href="cheatcode-detail.html">
+      <div class="feat-top">
+        <div>
+          <span class="rank-badge">#2 · Conversion</span>
+        </div>
+        <div class="score-badge"><span class="score-num">9/10</span><span class="score-lbl">impact</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="feat-emoji">⚓</div>
+        <div>
+          <div class="feat-science">Biais d'ancrage</div>
+          <div class="feat-title">Le premier prix vu conditionne tout ce qui suit</div>
+        </div>
+      </div>
+      <div class="use-tags">
+        <span class="use-tag">Pricing</span>
+        <span class="use-tag">Plans</span>
+        <span class="use-tag">Upsells</span>
+        <span class="use-tag">Comparatifs</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-desc">Ton cerveau décide si un prix est raisonnable en 0,3 secondes. La référence qu'il utilise ? Le premier chiffre qu'il a vu.</div>
+        <div class="feat-cheatcode">
+          <span class="feat-cheatcode-label">🎮 Cheatcode</span>
+          Affiche ton plan le plus cher <strong>en premier</strong>. Ce qui vient après semble automatiquement raisonnable.
+        </div>
+      </div>
+      <div class="feat-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span>
+          <span class="cb"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/apple.com" alt="Apple"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/notion.so" alt="Notion"></span>
+        </div>
+        <span class="feat-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- #3 Effet Zeigarnik -->
+    <a class="feat-card" href="cheatcode-detail.html">
+      <div class="feat-top">
+        <div>
+          <span class="rank-badge">#3 · Rétention</span>
+        </div>
+        <div class="score-badge"><span class="score-num">8/10</span><span class="score-lbl">impact</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div class="feat-emoji">🔄</div>
+        <div>
+          <div class="feat-science">Effet Zeigarnik</div>
+          <div class="feat-title">Une boucle ouverte, ça ne se ferme pas tout seul</div>
+        </div>
+      </div>
+      <div class="use-tags">
+        <span class="use-tag">Onboarding</span>
+        <span class="use-tag">Activation</span>
+        <span class="use-tag">Profil incomplet</span>
+        <span class="use-tag">Dashboards</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-desc">Les tâches inachevées restent activement en mémoire. Ton cerveau ne peut pas les ignorer — il veut clore ce qui est ouvert.</div>
+        <div class="feat-cheatcode">
+          <span class="feat-cheatcode-label">🎮 Cheatcode</span>
+          Laisse toujours <strong>une étape visible et incomplète</strong>. Les utilisateurs reviennent pour finir ce qu'ils ont commencé.
+        </div>
+      </div>
+      <div class="feat-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span>
+          <span class="cb"><img src="https://logo.clearbit.com/linkedin.com" alt="LinkedIn"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/duolingo.com" alt="Duolingo"></span>
+          <span class="cb"><img src="https://logo.clearbit.com/github.com" alt="GitHub"></span>
+        </div>
+        <span class="feat-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ══ GRID ══ -->
+<div class="grid-section">
+  <div class="section-header">
+    <span class="section-label">Tous les cheatcodes</span>
+    <div class="section-line"></div>
+    <span class="hover-hint"><div class="hover-hint-dot"></div>Survole pour voir le cheatcode</span>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Preuve sociale -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">⚡</div><div class="score-badge"><span class="score-num">9/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Preuve sociale</div><div class="card-title">Les gens font ce qu'ils voient les autres faire</div></div>
+      <div class="use-tags"><span class="use-tag">Landing page</span><span class="use-tag">Checkout</span><span class="use-tag">Onboarding</span></div>
+      <div class="card-body">
+        <div class="card-desc">La popularité est un signal de qualité. Si d'autres ont choisi ça, c'est probablement la bonne décision.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Dis <strong>qui</strong> utilise, pas juste combien. "3 200 équipes comme la tienne" convertit mieux que "3 200 utilisateurs".</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/instagram.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/amazon.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/airbnb.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Biais par défaut -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">💡</div><div class="score-badge"><span class="score-num">8/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Biais du choix par défaut</div><div class="card-title">Décide pour eux — ils te remercieront</div></div>
+      <div class="use-tags"><span class="use-tag">Pricing</span><span class="use-tag">Opt-in</span><span class="use-tag">Consent flows</span></div>
+      <div class="card-body">
+        <div class="card-desc">9 utilisateurs sur 10 acceptent l'option pré-cochée. Le défaut n'est jamais neutre.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Pré-sélectionne ton <strong>meilleur plan ou option</strong>. Chaque friction dans le choix coûte des conversions.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/apple.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/netflix.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/google.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Gradient de but -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">🎯</div><div class="score-badge"><span class="score-num">8/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Gradient de but</div><div class="card-title">Plus ils sont proches de la fin, plus ils accélèrent</div></div>
+      <div class="use-tags"><span class="use-tag">Onboarding</span><span class="use-tag">Profil</span><span class="use-tag">Gamification</span></div>
+      <div class="card-body">
+        <div class="card-desc">La motivation grimpe mécaniquement à l'approche d'un objectif. La barre de progression n'est pas cosmétique.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Montre la barre de progression <strong>dès le début</strong>, déjà un peu remplie. Les gens chassent ce qui semble presque terminé.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/duolingo.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/linkedin.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/strava.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Rareté perçue -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">⏰</div><div class="score-badge"><span class="score-num">8/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Rareté perçue</div><div class="card-title">Ce qui est limité semble plus précieux — même quand ce n'est pas vrai</div></div>
+      <div class="use-tags"><span class="use-tag">Pricing</span><span class="use-tag">Essais</span><span class="use-tag">Invitations</span><span class="use-tag">FOMO</span></div>
+      <div class="card-body">
+        <div class="card-desc">La disponibilité illimitée tue la valeur perçue. La contrainte, réelle ou visible, active le désir.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>"<strong>Plus que 3 places</strong>" ou "<strong>Offre valable 48h</strong>" — même une contrainte légère suffit à déclencher l'action.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/booking.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/nike.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/robinhood.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Aisance cognitive -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">🧠</div><div class="score-badge"><span class="score-num">8/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Aisance cognitive</div><div class="card-title">Facile à lire = plus facile à acheter</div></div>
+      <div class="use-tags"><span class="use-tag">Hero copy</span><span class="use-tag">Forms</span><span class="use-tag">CTA</span><span class="use-tag">Pricing</span></div>
+      <div class="card-body">
+        <div class="card-desc">Ce que le cerveau comprend sans effort semble plus vrai, plus fiable, et plus désirable.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Si ton CTA demande réflexion, il perd des conversions. <strong>Simplifie jusqu'à ce que ça soit une évidence</strong>.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/apple.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/notion.so" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/linear.app" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Effet de dotation -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">🎁</div><div class="score-badge"><span class="score-num">7/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Effet de dotation</div><div class="card-title">Ce qu'ils construisent chez toi, ils ne l'abandonnent pas</div></div>
+      <div class="use-tags"><span class="use-tag">Onboarding</span><span class="use-tag">Freemium</span><span class="use-tag">Reduce Churn</span></div>
+      <div class="card-body">
+        <div class="card-desc">On valorise davantage ce qu'on possède que ce qu'on ne possède pas encore. La personnalisation crée de l'attachement.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Fais-les <strong>construire quelque chose</strong> dès l'onboarding. Nom de workspace, première personnalisation — tout compte.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/notion.so" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/figma.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/spotify.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Nudge réactivation -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">🔔</div><div class="score-badge"><span class="score-num">7/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Nudge de réactivation</div><div class="card-title">Rappelle ce qu'ils ont construit — pas que tu existes</div></div>
+      <div class="use-tags"><span class="use-tag">Email</span><span class="use-tag">Push</span><span class="use-tag">Reduce Churn</span></div>
+      <div class="card-body">
+        <div class="card-desc">Un email "tu nous manques" n'a jamais ramené personne. La valeur déjà accumulée, si.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Commence par <strong>ce qu'ils ont laissé en cours</strong>. "Tes 12 rapports t'attendent" > "Reviens nous voir".</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/spotify.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/netflix.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/grammarly.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Réciprocité -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">🤝</div><div class="score-badge"><span class="score-num">7/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Réciprocité</div><div class="card-title">Donne d'abord sans demander — le retour vient naturellement</div></div>
+      <div class="use-tags"><span class="use-tag">Freemium</span><span class="use-tag">Lead gen</span><span class="use-tag">Referral</span></div>
+      <div class="card-body">
+        <div class="card-desc">Recevoir quelque chose gratuitement crée une dette psychologique. L'altruisme stratégique, c'est du business.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Donne quelque chose de <strong>vraiment utile</strong> avant de demander quoi que ce soit. Dans cet ordre. Toujours.</div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/dropbox.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/hubspot.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/uber.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+    <!-- Réduction friction -->
+    <a class="card" href="cheatcode-detail.html">
+      <div class="card-header"><div class="card-emoji">⚙️</div><div class="score-badge"><span class="score-num">6/10</span><span class="score-lbl">impact</span></div></div>
+      <div><div class="card-science">Réduction de la friction</div><div class="card-title">Si tu dois l'expliquer, c'est déjà trop compliqué</div></div>
+      <div class="use-tags"><span class="use-tag">Signup</span><span class="use-tag">Checkout</span><span class="use-tag">Forms</span><span class="use-tag">Activation</span></div>
+      <div class="card-body">
+        <div class="card-desc">Chaque étape supplémentaire est une porte de sortie. La friction tue les conversions en silence, sans laisser de trace.</div>
+        <div class="card-cc"><span class="card-cc-lbl">🎮 Cheatcode</span>Enlève un champ de ton formulaire. Juste un. <strong>Le taux de complétion monte à chaque champ retiré.</strong></div>
+      </div>
+      <div class="card-footer">
+        <div class="brand-row"><span class="brand-row-label">Vu chez</span><span class="cb-sm"><img src="https://logo.clearbit.com/stripe.com" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/notion.so" alt=""></span><span class="cb-sm"><img src="https://logo.clearbit.com/figma.com" alt=""></span></div>
+        <span class="card-cta">Lire →</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>50+ cheatcodes t'attendent</h2>
+  <p>Chaque pattern avec son score, son prompt IA et ses exemples concrets.</p>
+  <button class="bottom-cta-btn">🎮 Charger tous les cheatcodes</button>
+</div>
+
+<script>
+function toggleDd(id) {
+  const btn = document.querySelector('#' + id + ' .dropdown-btn');
+  const menu = document.querySelector('#' + id + '-menu');
+  const isOpen = menu.classList.contains('open');
+  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { menu.classList.add('open'); btn.classList.add('open'); }
+}
+function selectItem(el) {
+  const menu = el.closest('.dropdown-menu');
+  const ddId = menu.id.replace('-menu', '');
+  const btn = document.querySelector('#' + ddId + ' .dropdown-btn');
+  menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  btn.classList.add('has-selection');
+  menu.classList.remove('open');
+  btn.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')) {
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>
