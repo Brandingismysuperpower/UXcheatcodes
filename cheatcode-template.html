@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aversion à la Perte — UX Cheatcodes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:             #0B0813;
+    --surface:        #130f1e;
+    --surface2:       #1a1628;
+    --border:         rgba(255,255,255,0.07);
+    --border-md:      rgba(255,255,255,0.11);
+    --text:           #edecf5;
+    --text-2:         #9b96b0;
+    --text-3:         #524e66;
+    --accent:         #9B85EC;
+    --accent-dim:     rgba(155,133,236,0.1);
+    --accent-border:  rgba(155,133,236,0.25);
+    --green:          #34d399;
+    --yellow:         #fbbf24;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 56px;
+    display: flex; align-items: center; padding: 0 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,8,19,0.92);
+    backdrop-filter: blur(16px);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 9px;
+    text-decoration: none; margin-right: 32px;
+  }
+  .nav-logo-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(155,133,236,0.3);
+  }
+  .nav-logo-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .nav-links { display: flex; gap: 2px; flex: 1; }
+  .nav-link {
+    padding: 6px 12px; border-radius: 8px;
+    color: var(--text-2); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-link:hover { color: var(--text); background: var(--surface2); }
+  .nav-link.active { color: var(--text); background: var(--surface2); }
+  .nav-btn {
+    padding: 7px 16px; border-radius: 8px;
+    background: var(--accent); color: white;
+    font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 0 20px rgba(155,133,236,0.25);
+    transition: opacity 0.15s;
+  }
+  .nav-btn:hover { opacity: 0.88; }
+
+  /* ── LAYOUT ── */
+  .page {
+    display: grid;
+    grid-template-columns: 1fr 268px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-top: 56px;
+    min-height: 100vh;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    padding: 52px 64px 80px 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--text-3); font-size: 13px; margin-bottom: 36px;
+  }
+  .breadcrumb a { color: var(--text-3); text-decoration: none; transition: color 0.15s; }
+  .breadcrumb a:hover { color: var(--text-2); }
+
+  /* HEADER */
+  .header { margin-bottom: 48px; }
+
+  .header-top {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 20px;
+  }
+
+  .header-left { display: flex; gap: 20px; align-items: flex-start; flex: 1; }
+
+  .header-emoji {
+    width: 60px; height: 60px; border-radius: 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; flex-shrink: 0;
+  }
+
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tag {
+    padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text-2); font-family: 'DM Mono', monospace;
+  }
+  .tag.purple {
+    background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px; font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.5px;
+    color: var(--text); margin-bottom: 12px;
+  }
+  .subtitle { color: var(--text-2); font-size: 16px; line-height: 1.7; max-width: 520px; }
+
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+  .reading-time { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-3); }
+  .share-row { display: flex; gap: 5px; }
+  .share-btn {
+    width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--border); background: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s; color: var(--text-2);
+  }
+  .share-btn:hover { border-color: var(--accent-border); background: var(--accent-dim); color: var(--accent); }
+  .share-btn svg { width: 12px; height: 12px; fill: currentColor; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 44px; scroll-margin-top: 80px; }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text-3);
+    font-family: 'DM Mono', monospace; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .section p { color: var(--text-2); line-height: 1.8; }
+  .section p + p { margin-top: 14px; }
+  .section strong { color: var(--text); font-weight: 600; }
+
+  /* DEMO */
+  .demo-block {
+    margin-top: 20px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--surface); overflow: hidden;
+  }
+  .demo-header {
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; background: var(--surface2);
+  }
+  .demo-dots { display: flex; gap: 5px; }
+  .demo-dots span { width: 9px; height: 9px; border-radius: 50%; }
+  .demo-title-bar { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-3); }
+  .demo-body { padding: 20px; }
+
+  .trial-widget {
+    background: var(--surface2); border-radius: 10px; padding: 16px;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 12px; border: 1px solid var(--border);
+  }
+  .tw-info { flex: 1; }
+  .tw-label { font-size: 12px; color: var(--text-3); margin-bottom: 3px; font-family: 'DM Mono', monospace; }
+  .tw-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .tw-bar { flex: 1; }
+  .tw-track { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 5px; }
+  .tw-fill { height: 3px; background: var(--accent); border-radius: 2px; width: 65%; box-shadow: 0 0 8px rgba(155,133,236,0.4); }
+  .tw-note { font-size: 11px; color: var(--text-3); font-family: 'DM Mono', monospace; }
+  .tw-days { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+  .tw-days small { font-size: 11px; color: var(--text-3); display: block; line-height: 1.3; }
+
+  .demo-cta {
+    width: 100%; padding: 12px; border-radius: 8px; border: none;
+    background: var(--accent); color: white;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: opacity 0.15s;
+  }
+  .demo-cta:hover { opacity: 0.88; }
+  .demo-note { text-align: center; font-size: 12px; color: var(--text-3); margin-top: 8px; }
+
+  /* CHEATCODE */
+  .cheatcode-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px;
+    position: relative; overflow: hidden;
+  }
+  .cheatcode-box::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--accent);
+    box-shadow: 0 0 12px rgba(155,133,236,0.5);
+  }
+  .cheatcode-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  .cheatcode-text { font-size: 16px; color: var(--text); line-height: 1.65; font-style: italic; }
+
+  /* PATTERNS */
+  .patterns { display: flex; flex-direction: column; gap: 2px; }
+  .pattern {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 16px; border-radius: 8px;
+    border: 1px solid transparent; transition: background 0.15s, border-color 0.15s;
+  }
+  .pattern:hover { background: var(--surface); border-color: var(--border); }
+  .pattern-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-3); min-width: 20px; padding-top: 2px; }
+  .pattern-body { font-size: 14px; color: var(--text-2); line-height: 1.75; }
+  .pattern-body strong { color: var(--text); font-weight: 600; }
+
+  /* PROMPT */
+  .prompt-block { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  .prompt-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 16px; background: var(--surface2); border-bottom: 1px solid var(--border);
+  }
+  .prompt-top-left { display: flex; align-items: center; gap: 10px; }
+  .pdots { display: flex; gap: 5px; }
+  .pdot { width: 9px; height: 9px; border-radius: 50%; }
+  .pname { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-3); }
+  .copy-btn {
+    padding: 5px 12px; border-radius: 6px;
+    border: 1px solid var(--border); background: none;
+    color: var(--text-2); font-size: 12px; cursor: pointer;
+    font-family: 'DM Mono', monospace; transition: all 0.15s;
+  }
+  .copy-btn:hover { border-color: var(--accent-border); color: var(--accent); }
+  .prompt-body {
+    padding: 20px; background: #070510;
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    line-height: 1.9; color: #b8b4d0;
+  }
+  .kw { color: #cf9aff; }
+  .str { color: #89d4ff; }
+  .cm { color: #3e3a55; }
+  .vr { color: #f0a76a; }
+
+  /* ── RIGHT SIDEBAR ── */
+  .right-sidebar {
+    padding: 52px 28px 80px;
+    position: sticky; top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+
+  .sidebar-section { margin-bottom: 32px; }
+  .sidebar-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text-3);
+    font-family: 'DM Mono', monospace; margin-bottom: 14px;
+  }
+
+  /* SCORES */
+  .scores { display: flex; flex-direction: column; gap: 12px; }
+  .score-row { display: flex; align-items: center; gap: 10px; }
+  .score-name { font-size: 13px; color: var(--text-2); width: 60px; flex-shrink: 0; }
+  .score-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; }
+  .score-fill { height: 3px; border-radius: 2px; }
+  .score-fill.g { background: var(--green); width: 90%; }
+  .score-fill.y { background: var(--yellow); width: 70%; }
+  .score-fill.p { background: var(--accent); width: 85%; box-shadow: 0 0 8px rgba(155,133,236,0.35); }
+  .score-val { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-2); width: 32px; text-align: right; flex-shrink: 0; }
+
+  /* USE FOR */
+  .use-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .use-tag {
+    padding: 5px 10px; border-radius: 6px; font-size: 12px;
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text-2);
+  }
+
+  /* STADE PRODUIT */
+  .stage-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .stage-tag {
+    padding: 5px 11px; border-radius: 6px; font-size: 12px; font-weight: 500;
+    background: var(--accent-dim); border: 1px solid var(--accent-border);
+    color: var(--accent); font-family: 'DM Mono', monospace;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .stage-tag::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .stage-context {
+    font-size: 13px; color: var(--text-3); line-height: 1.6;
+    padding: 10px 12px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  /* RELATED */
+  .related { display: flex; flex-direction: column; gap: 2px; }
+  .related-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 12px; border-radius: 8px; text-decoration: none;
+    color: var(--text-2); border: 1px solid transparent;
+    font-size: 13px; font-weight: 500; transition: all 0.15s;
+  }
+  .related-item:hover { background: var(--surface); border-color: var(--border); color: var(--text); }
+  .related-arrow { color: var(--text-3); }
+
+  .sidebar-divider { height: 1px; background: var(--border); margin-bottom: 32px; }
+
+  /* YT */
+  .yt-block {
+    padding: 16px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .yt-icon { font-size: 18px; margin-bottom: 8px; }
+  .yt-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .yt-sub { font-size: 12px; color: var(--text-3); line-height: 1.5; margin-bottom: 10px; }
+  .yt-soon { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🎮</div>
+    <span class="nav-logo-name">UX Cheatcodes</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Outils IA</a>
+    <a class="nav-link" href="#">Session 1:1</a>
+    <a class="nav-link active" href="#">UX cheatcodes</a>
+  </div>
+  <button class="nav-btn">Analyser mon produit</button>
+</nav>
+
+<div class="page">
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="breadcrumb">
+      <a href="#">Bibliothèque</a>
+      <span>›</span>
+      <a href="#">Économie comportementale</a>
+      <span>›</span>
+      <span style="color: var(--text-2)">Aversion à la perte</span>
+    </div>
+
+    <div class="header">
+      <div class="header-top">
+        <div class="header-left">
+          <div class="header-emoji">😰</div>
+          <div>
+            <div class="tags">
+              <span class="tag purple">Économie comportementale</span>
+              <span class="tag">Conversion</span>
+              <span class="tag">Rétention</span>
+            </div>
+            <h1>Aversion à la perte</h1>
+            <p class="subtitle">Les gens détestent perdre bien plus qu'ils n'aiment gagner. Les pertes sont psychologiquement deux fois plus puissantes que les gains — et le cadrage de ton produit exploite ça, ou le combat.</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="reading-time">5 min de lecture</div>
+          <div class="share-row">
+            <button class="share-btn" title="Partager sur X">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.732-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </button>
+            <button class="share-btn" title="Partager sur LinkedIn">
+              <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </button>
+            <button class="share-btn" title="Copier le lien">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPÉRIENCE -->
+    <div class="section" id="experience">
+      <div class="section-label">⚡ Expérience</div>
+      <p>Quand un utilisateur réalise qu'il pourrait <strong>perdre l'accès</strong> à quelque chose qu'il utilise déjà — ses données, sa progression, le travail de son équipe — la pression psychologique est bien plus forte que n'importe quel avantage qu'on pourrait lui proposer en échange.</p>
+
+      <div class="demo-block">
+        <div class="demo-header">
+          <div class="demo-dots">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <span class="demo-title-bar">Exemple live — ressens-le</span>
+        </div>
+        <div class="demo-body">
+          <div class="trial-widget">
+            <div class="tw-info">
+              <div class="tw-label">Essai gratuit</div>
+              <div class="tw-name">Accès Pro</div>
+            </div>
+            <div class="tw-bar">
+              <div class="tw-track"><div class="tw-fill"></div></div>
+              <div class="tw-note">65% écoulé</div>
+            </div>
+            <div class="tw-days">3 <small>jours<br>restants</small></div>
+          </div>
+          <button class="demo-cta" id="demoCta">Ne perds pas ta progression — passe à Pro maintenant</button>
+          <p class="demo-note" id="demoNote">Tes 47 éléments sauvegardés et tes rapports seront supprimés à la fin de l'essai.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- POURQUOI ÇA MARCHE -->
+    <div class="section" id="science">
+      <div class="section-label">🧠 Pourquoi ça marche</div>
+      <p>La Théorie des Perspectives de Kahneman & Tversky montre que <strong>les pertes pèsent environ deux fois plus lourd que des gains équivalents</strong>. Perdre 10€ fait plus mal que gagner 10€ fait du bien — et cette asymétrie est câblée dans notre cerveau.</p>
+      <p>Le mécanisme clé est la <strong>dépendance au point de référence</strong> : une fois qu'une personne possède quelque chose (un accès, des données, un streak), son cerveau le recalibrate comme nouvelle ligne de base. Le perdre ressemble à reculer, pas juste à rater un gain.</p>
+    </div>
+
+    <!-- CHEATCODE -->
+    <div class="section" id="cheatcode">
+      <div class="section-label">🎮 Cheatcode</div>
+      <div class="cheatcode-box">
+        <div class="cheatcode-eyebrow">Le move</div>
+        <div class="cheatcode-text">« Cadre la valeur comme une protection, pas une promotion. "Ne perds pas l'accès" bat "Obtiens plus de fonctionnalités" à chaque fois. »</div>
+      </div>
+    </div>
+
+    <!-- DESIGN PATTERNS -->
+    <div class="section" id="patterns">
+      <div class="section-label">🔧 Design patterns</div>
+      <div class="patterns">
+        <div class="pattern">
+          <div class="pattern-num">01</div>
+          <div class="pattern-body"><strong>Avertissement de perte de progression</strong> — Montre exactement ce que l'utilisateur perdra : "Tes 12 rapports sauvegardés et tes données d'analyse seront supprimés."</div>
+        </div>
+        <div class="pattern">
+          <div class="pattern-num">02</div>
+          <div class="pattern-body"><strong>Barre de progression qui se vide</strong> — Cadre le temps comme quelque chose qui se consomme, pas un compte à rebours. Voir quelque chose disparaître fait plus d'effet qu'attendre.</div>
+        </div>
+        <div class="pattern">
+          <div class="pattern-num">03</div>
+          <div class="pattern-body"><strong>Protection du streak</strong> — Le "streak shield" de Duolingo est de l'aversion à la perte pure. Donne aux utilisateurs quelque chose à protéger, puis rappelle-leur que ça peut disparaître.</div>
+        </div>
+        <div class="pattern">
+          <div class="pattern-num">04</div>
+          <div class="pattern-body"><strong>Prix ancré</strong> — "Était 49€, Maintenant 19€" active l'aversion à la perte sur le prix. Le prix ancré ressemble à de l'argent qu'on perdrait, pas à une économie.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROMPT IA -->
+    <div class="section" id="prompt">
+      <div class="section-label">🤖 Prompt IA — copie et utilise</div>
+      <p style="margin-bottom: 16px;">Colle ce prompt directement dans Claude ou ChatGPT pour appliquer ce pattern sur ton produit ↓</p>
+      <div class="prompt-block">
+        <div class="prompt-top">
+          <div class="prompt-top-left">
+            <div class="pdots">
+              <div class="pdot" style="background:#ff5f57"></div>
+              <div class="pdot" style="background:#febc2e"></div>
+              <div class="pdot" style="background:#28c840"></div>
+            </div>
+            <span class="pname">prompt.txt</span>
+          </div>
+          <button class="copy-btn" id="copyBtn">📋 Copier</button>
+        </div>
+        <div class="prompt-body">
+<span class="cm"># Aversion à la Perte — UX Cheatcode</span>
+
+<span class="kw">Contexte :</span> Je travaille sur <span class="vr">[ton produit]</span> et je veux
+appliquer l'Aversion à la Perte pour améliorer
+<span class="vr">[conversion / rétention]</span>.
+
+<span class="kw">Mon CTA / texte actuel :</span>
+<span class="str">"[colle ton texte actuel ici]"</span>
+
+<span class="kw">Tâche :</span> Réécris en utilisant un cadrage de perte
+plutôt qu'un cadrage de gain. Donne-moi
+<span class="str">3 variations</span> classées par impact psychologique.
+Pour chacune, explique :
+  - Quelle perte tu rends saillante
+  - Pourquoi ça créera de l'urgence
+  - Où le placer dans l'UI
+
+<span class="cm"># Propose aussi 2 design patterns applicables
+# cette semaine sans ressources dev.</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="right-sidebar">
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Scores</div>
+      <div class="scores">
+        <div class="score-row">
+          <span class="score-name">Impact</span>
+          <div class="score-track"><div class="score-fill g"></div></div>
+          <span class="score-val">9/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-name">Facilité</span>
+          <div class="score-track"><div class="score-fill y"></div></div>
+          <span class="score-val">7/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-name">Rapidité</span>
+          <div class="score-track"><div class="score-fill p"></div></div>
+          <span class="score-val">Rapide</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Utilise pour</div>
+      <div class="use-tags">
+        <span class="use-tag">Essais qui expirent</span>
+        <span class="use-tag">Upsells freemium</span>
+        <span class="use-tag">Abandon panier</span>
+        <span class="use-tag">Rappels</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Stade produit</div>
+      <div class="stage-tags">
+        <span class="stage-tag">0 → 1k utilisateurs</span>
+        <span class="stage-tag">Scaling</span>
+        <span class="stage-tag">Churn risk</span>
+      </div>
+      <div class="stage-context">
+        Particulièrement efficace quand tu as déjà des utilisateurs actifs — ils ont quelque chose à perdre. Peu utile avant l'acquisition.
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Voir aussi</div>
+      <div class="related">
+        <a class="related-item" href="#">Biais d'ancrage <span class="related-arrow">›</span></a>
+        <a class="related-item" href="#">Effet de rareté <span class="related-arrow">›</span></a>
+        <a class="related-item" href="#">Coût irrécupérable <span class="related-arrow">›</span></a>
+        <a class="related-item" href="#">Effet Zeigarnik <span class="related-arrow">›</span></a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <div class="yt-block">
+        <div class="yt-icon">🎬</div>
+        <div class="yt-title">Deep dive sur YouTube</div>
+        <div class="yt-sub">Analyses d'apps réelles qui utilisent ce pattern.</div>
+        <div class="yt-soon">Vidéo bientôt disponible →</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+  const cta = document.getElementById('demoCta');
+  const note = document.getElementById('demoNote');
+  cta.addEventListener('click', () => {
+    cta.textContent = '✅ Progression sauvegardée — bienvenue en Pro';
+    cta.style.background = '#16a34a';
+    note.textContent = 'Tes 47 éléments sont en sécurité. Profite de ton upgrade.';
+    setTimeout(() => {
+      cta.textContent = "Ne perds pas ta progression — passe à Pro maintenant";
+      cta.style.background = 'var(--accent)';
+      note.textContent = "Tes 47 éléments sauvegardés et tes rapports seront supprimés à la fin de l'essai.";
+    }, 2500);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const text = `# Aversion à la Perte — UX Cheatcode\n\nContexte : Je travaille sur [ton produit] et je veux appliquer l'Aversion à la Perte pour améliorer [conversion / rétention].\n\nMon CTA / texte actuel :\n"[colle ton texte actuel ici]"\n\nTâche : Réécris en utilisant un cadrage de perte plutôt qu'un cadrage de gain. Donne-moi 3 variations classées par impact psychologique. Pour chacune, explique :\n  - Quelle perte tu rends saillante\n  - Pourquoi ça créera de l'urgence\n  - Où le placer dans l'UI\n\n# Propose aussi 2 design patterns applicables cette semaine sans ressources dev.`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copié !';
+      setTimeout(() => btn.textContent = '📋 Copier', 2000);
+    });
+  });
+</script>
+</body>
+</html>
